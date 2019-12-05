@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "lib": [
+          "dom",
+          "dom.iterable",
+          "esnext"
+        ],
+        "outDir": "./dist/",
+        "noImplicitAny": true,
+        "module": "es6",
+        "target": "es6",
+        "allowJs": true,
+        "allowSyntheticDefaultImports": true,
+        "moduleResolution": "node",
+        "jsx": "react",
+    },
+    "include": ["src/index.d.ts"]
+}
