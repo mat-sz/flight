@@ -6,7 +6,7 @@ import './App.scss';
 import gameState from './reducers/gameState';
 import addOverlay from './functions/addOverlay';
 import addWindowEvents from './functions/addWindowEvents';
-import tick from './functions/tick';
+import tick, { reset } from './functions/tick';
 import createShaders from './shaders';
 
 const gameStateStore = createStore(gameState);
@@ -51,4 +51,6 @@ function render(time: number) {
 setInterval(() => tick(camera, scene, planeMesh, gameStateStore), 16.667);
 
 addWindowEvents(camera, renderer, gameStateStore);
-addOverlay(gameStateStore);
+addOverlay(gameStateStore, () => {
+    reset(camera, scene, planeMesh, gameStateStore);
+});

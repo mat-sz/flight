@@ -89,6 +89,30 @@ function spawn(camera: PerspectiveCamera, scene: Scene) {
     }
 }
 
+export function reset(camera: PerspectiveCamera, scene: Scene, planeMesh: Mesh, gameStateStore: Store<GameState, Action>) {
+    gameStateStore.dispatch({ type: ActionType.SET_SCORE, value: 0 });
+    camera.position.z = 0;
+    planeMesh.position.z = 1;
+    camera.lookAt(new Vector3(0, 1, camera.position.z + 1));
+
+    lastZ = 0;
+    speed = 0.02;
+    spawnCycle = 0;
+    spawnMode = 0;
+    
+    boxMeshes = boxMeshes.filter((mesh) => {
+        scene.remove(mesh);
+        return false;
+    });
+
+    pickupMeshes = pickupMeshes.filter((mesh) => {
+        scene.remove(mesh);
+        return false;
+    });
+
+    gameStateStore.dispatch({ type: ActionType.SET_DEFEAT, value: false });
+}
+
 export default function tick(camera: PerspectiveCamera, scene: Scene, planeMesh: Mesh, gameStateStore: Store<GameState, Action>) {
     if (gameStateStore.getState().defeat) return;
 
@@ -97,7 +121,6 @@ export default function tick(camera: PerspectiveCamera, scene: Scene, planeMesh:
     camera.lookAt(new Vector3(0, 1, camera.position.z + 1));
     
     const targetX = gameStateStore.getState().lane * -(laneWidth);
-    planeMesh.position.y = 0;
     planeMesh.position.z = camera.position.z + 1;
     
     if (planeMesh.position.x != targetX) {

@@ -6,25 +6,30 @@ import moneyImage from '../img/money.png';
 
 import { GameState } from '../Types';
 
-const mapStateToProps = (state: GameState) => state;
+const mapStateToProps = (state: GameState, { onReset }: { onReset: () => void }) => {
+    return { state, onReset };
+};
 
 const Overlay = connect(
     mapStateToProps
-)(({ score, money, defeat }: GameState) => {
+)(({ onReset, state }: { onReset: () => void, state: GameState }) => {
     return (
         <div className="overlay">
             <div className={classNames('defeat', {
-                'hidden': !defeat,
+                'hidden': !state.defeat,
             })}>
                 <div className="text">
                     Defeat
                 </div>
+                <div className="actions">
+                    <button onClick={() => onReset()}>New Game</button>
+                </div>
             </div>
             <div className="score">
-                Score: {Math.round(score * 100)}
+                Score: {Math.round(state.score * 100)}
             </div>
             <div className="money">
-                {Math.round(money)} <img src={moneyImage} alt="Money" />
+                {Math.round(state.money)} <img src={moneyImage} alt="Money" />
             </div>
         </div>
     )
