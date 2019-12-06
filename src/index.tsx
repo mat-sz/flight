@@ -1,13 +1,14 @@
-import { PerspectiveCamera, Scene, WebGLRenderer, Mesh, ConeGeometry, MeshNormalMaterial, Vector3, ShaderMaterial, PlaneGeometry } from 'three';
+import { PerspectiveCamera, Scene, WebGLRenderer, Mesh, ConeGeometry, MeshNormalMaterial, Vector2, WebGLRenderTarget } from 'three';
 import { createStore } from 'redux';
 
 import './App.scss';
 import scanlines from './shaders/scanlines.frag';
-import gameState from './reducers/gameState';
 
+import gameState from './reducers/gameState';
 import addOverlay from './functions/addOverlay';
 import addWindowEvents from './functions/addWindowEvents';
 import tick from './functions/tick';
+import createShader from './functions/createShader';
 
 const gameStateStore = createStore(gameState);
 
@@ -26,37 +27,28 @@ const planeMesh = new Mesh(geometry, material);
 planeMesh.rotateX(Math.PI/2);
 scene.add(planeMesh);
 
-// Scanlines shader.
-let uniforms = {
-    iTime: { value: 0 },
-    iResolution:  { value: new Vector3() },
-};
-
-const shaderMaterial: ShaderMaterial = new ShaderMaterial({
-    uniforms,
-    fragmentShader: scanlines,
-    transparent: true,
-});
-const shaderMesh = new Mesh(new PlaneGeometry(20, 20), shaderMaterial);
-scene.add(shaderMesh);
-shaderMesh.rotateX(180);
+const scanlinesShader = createShader(renderer, scanlines);
 
 // ...and here we start rendering things.
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
+const outputBuffer: WebGLRenderTarget = new WebGLRenderTarget(1, 1);
+outputBuffer.texture.generateMipmaps = false;
 render(0);
  
 function render(time: number) {
-    uniforms.iResolution.value.set(renderer.domElement.width, renderer.domElement.height, 1);
-    uniforms.iTime.value = time * 0.001;
-
-    requestAnimationFrame(render);
- 
+    const size = renderer.getDrawingBufferSize(new Vector2());
+    outputBuffer.setSize(size.width, size.height);
+    
+    renderer.setRenderTarget(outputBuffer);
     renderer.render(scene, camera);
+
+    scanlinesShader(outputBuffer, time, true);
+    requestAnimationFrame(render);
 }
 
-setInterval(() => tick(camera, scene, planeMesh, shaderMesh, gameStateStore), 16.667);
+setInterval(() => tick(camera, scene, planeMesh, gameStateStore), 16.667);
 
 addWindowEvents(camera, renderer, gameStateStore);
 addOverlay(gameStateStore);

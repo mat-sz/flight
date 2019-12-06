@@ -93,15 +93,11 @@ function spawn(camera: PerspectiveCamera, scene: Scene) {
     }
 }
 
-export default function tick(camera: PerspectiveCamera, scene: Scene, planeMesh: Mesh, shaderMesh: Mesh, gameStateStore: Store<GameState, Action>) {
+export default function tick(camera: PerspectiveCamera, scene: Scene, planeMesh: Mesh, gameStateStore: Store<GameState, Action>) {
     if (gameStateStore.getState().defeat) return;
 
     camera.position.z += speed;
     camera.lookAt(new Vector3(0, 1, camera.position.z + 1));
-
-    shaderMesh.position.x = 0;
-    shaderMesh.position.y = 0;
-    shaderMesh.position.z = camera.position.z;
     
     const targetX = gameStateStore.getState().lane * -(laneWidth);
     planeMesh.position.y = 0;

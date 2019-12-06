@@ -1,18 +1,19 @@
 #include <common>
- 
+
+uniform sampler2D iTexture;
 uniform vec3 iResolution;
 uniform float iTime;
 
 vec2 fisheye(vec2 coord, float str)
 {
     vec2 neg1to1 = coord;
-    neg1to1 = (neg1to1 - 0.5) * 2.0;        
-        
+    neg1to1 = (neg1to1 - 0.5) * 2.0;
+    
     vec2 offset;
     offset.x = ( pow(neg1to1.y,2.0)) * str * (neg1to1.x);
     offset.y = ( pow(neg1to1.x,2.0)) * str * (neg1to1.y);
     
-    return coord + offset;         
+    return coord + offset;
 }
 
 vec4 scanline(vec2 coord, vec4 screen)
@@ -32,15 +33,12 @@ vec4 vignette(vec2 coord, vec4 screen)
     return screen * (1.0 - dx * dx - dy * dy);
 }
 
-void mainImage(out vec4 fragColor, in vec2 fragCoord)
+void main()
 {
-    vec2 p = fragCoord.xy / iResolution.xy;
+    vec2 p = gl_FragCoord.xy / iResolution.xy;
+    gl_FragColor = texture2D(iTexture, p);
     p = fisheye(p, 0.03);
     
-    fragColor = vignette(p, scanline(p, fragColor));
-    fragColor.a = 0.5;
-}
-
-void main() {
-    mainImage(gl_FragColor, gl_FragCoord.xy);
+    gl_FragColor = vignette(p, scanline(p, gl_FragColor));
+    gl_FragColor.a = 0.5;
 }
