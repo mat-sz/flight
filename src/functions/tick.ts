@@ -92,6 +92,7 @@ function spawn(camera: PerspectiveCamera, scene: Scene) {
 export default function tick(camera: PerspectiveCamera, scene: Scene, planeMesh: Mesh, gameStateStore: Store<GameState, Action>) {
     if (gameStateStore.getState().defeat) return;
 
+    gameStateStore.dispatch({ type: ActionType.ADD_SCORE, value: speed });
     camera.position.z += speed;
     camera.lookAt(new Vector3(0, 1, camera.position.z + 1));
     
@@ -127,7 +128,7 @@ export default function tick(camera: PerspectiveCamera, scene: Scene, planeMesh:
         if (Math.abs(planeMesh.position.x - mesh.position.x) < 0.2
             && Math.abs(planeMesh.position.z - mesh.position.z) < 0.15) {
             // Dumb collision detection.
-            gameStateStore.dispatch({ type: ActionType.INCREMENT_SCORE });
+            gameStateStore.dispatch({ type: ActionType.ADD_MONEY, value: 1 });
             scene.remove(mesh);
             return false;
         } else {

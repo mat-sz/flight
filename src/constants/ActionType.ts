@@ -1,8 +1,10 @@
 enum ActionType {
     SET_SCORE,
+    SET_MONEY,
     SET_DEFEAT,
     SET_LANE,
-    INCREMENT_SCORE,
+    ADD_SCORE,
+    ADD_MONEY,
 };
 
 export default ActionType;

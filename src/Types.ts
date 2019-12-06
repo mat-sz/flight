@@ -8,5 +8,6 @@ export interface Action {
 export interface GameState {
     score: number,
     lane: number,
+    money: number,
     defeat: boolean,
 };

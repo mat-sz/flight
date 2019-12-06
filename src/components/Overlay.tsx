@@ -8,10 +8,13 @@ const mapStateToProps = (state: GameState) => state;
 
 const Overlay = connect(
     mapStateToProps
-)(({ score, defeat }: { score: number, defeat: boolean }) => {
+)(({ score, money, defeat }: GameState) => {
     return (
         <div className="overlay">
-            <div className="score">Score: {score}</div>
+            <div className="score">
+                <div>Score: {Math.round(score * 100)}</div>
+                <div>Money: {Math.round(money)}</div>
+            </div>
             <div className={classNames('defeat', {
                 'hidden': !defeat,
             })}>You've lost.</div>
