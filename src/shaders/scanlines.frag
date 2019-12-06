@@ -19,7 +19,7 @@ vec2 fisheye(vec2 coord, float str)
 vec4 scanline(vec2 coord, vec4 screen)
 {
     const float scale = .0025;
-    const float amt = 0.05;
+    const float amt = 0.01;
     const float spd = 1.0;
     
     screen.rgb += sin((coord.y / scale - (iTime * spd * 6.28))) * amt;

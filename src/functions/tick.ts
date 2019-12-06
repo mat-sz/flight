@@ -19,7 +19,7 @@ function spawnGeometry(geometry: Geometry, trackingArray: Mesh[], camera: Perspe
     let mesh = new Mesh(geometry, material);
     mesh.position.x = lane * laneWidth;
     mesh.position.y = 0;
-    mesh.position.z = camera.position.z + 4;
+    mesh.position.z = camera.position.z + 7;
 
     trackingArray.push(mesh);
     

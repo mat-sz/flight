@@ -2,14 +2,12 @@ import { PerspectiveCamera, Scene, WebGLRenderer, Mesh, ConeGeometry, MeshNormal
 import { createStore } from 'redux';
 
 import './App.scss';
-import scanlines from './shaders/scanlines.frag';
-import vignette from './shaders/vignette.frag';
 
 import gameState from './reducers/gameState';
 import addOverlay from './functions/addOverlay';
 import addWindowEvents from './functions/addWindowEvents';
 import tick from './functions/tick';
-import createShader from './functions/createShader';
+import createShaders from './shaders';
 
 const gameStateStore = createStore(gameState);
 
@@ -28,10 +26,7 @@ const planeMesh = new Mesh(geometry, material);
 planeMesh.rotateX(Math.PI/2);
 scene.add(planeMesh);
 
-const shaders = [
-    createShader(renderer, scanlines),
-    createShader(renderer, vignette),
-];
+const shaders = createShaders(renderer);
 
 // ...and here we start rendering things.
 renderer.setSize(window.innerWidth, window.innerHeight);
