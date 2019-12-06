@@ -114,13 +114,13 @@ export function reset(camera: PerspectiveCamera, scene: Scene, planeMesh: Mesh, 
 }
 
 export default function tick(camera: PerspectiveCamera, scene: Scene, planeMesh: Mesh, gameStateStore: Store<GameState, Action>) {
-    if (gameStateStore.getState().defeat) return;
+    const state = gameStateStore.getState();
+    if (state.defeat) return;
 
-    gameStateStore.dispatch({ type: ActionType.ADD_SCORE, value: speed });
     camera.position.z += speed;
     camera.lookAt(new Vector3(0, 1, camera.position.z + 1));
     
-    const targetX = gameStateStore.getState().lane * -(laneWidth);
+    const targetX = state.lane * -(laneWidth);
     planeMesh.position.z = camera.position.z + 1;
     
     if (planeMesh.position.x != targetX) {

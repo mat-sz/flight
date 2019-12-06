@@ -43,6 +43,7 @@ button {
 
     &__value {
         font-size: 24px;
+        will-change: contents;
     }
 }
 

@@ -6,7 +6,7 @@ import { WebGLRenderer, WebGLRenderTarget, Vector2, Vector3, OrthographicCamera,
  * @param fragmentShader 
  * @param vertexShader 
  */
-export default function createShader(renderer: WebGLRenderer, fragmentShader?: string, vertexShader?: string) {
+export default function createShader(renderer: WebGLRenderer, fragmentShader?: string, vertexShader?: string, customUniforms?: {[key: string]: Uniform}) {
     const camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
     const scene = new Scene();
 
@@ -14,6 +14,7 @@ export default function createShader(renderer: WebGLRenderer, fragmentShader?: s
         iTime: new Uniform(0),
         iResolution:  new Uniform(new Vector3()),
         iTexture: new Uniform(null),
+        ...customUniforms,
     };
 
     const shaderMaterial: ShaderMaterial = new ShaderMaterial({

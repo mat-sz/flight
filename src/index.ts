@@ -8,6 +8,7 @@ import addOverlay from './functions/addOverlay';
 import addWindowEvents from './functions/addWindowEvents';
 import tick, { reset } from './functions/tick';
 import createShaders from './shaders';
+import ActionType from './constants/ActionType';
 
 const gameStateStore = createStore(gameState);
 
@@ -47,6 +48,10 @@ function render(time: number) {
 
     requestAnimationFrame(render);
 }
+
+setInterval(() => {
+    gameStateStore.dispatch({ type: ActionType.SET_SCORE, value: camera.position.z });
+}, 50);
 
 setInterval(() => tick(camera, scene, planeMesh, gameStateStore), 16.667);
 
