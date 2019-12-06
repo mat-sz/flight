@@ -26,7 +26,12 @@ const Overlay = connect(
                 </div>
             </div>
             <div className="score">
-                Score: {Math.round(state.score * 100)}
+                <div>
+                    Score: {Math.round(state.score * 100)}
+                </div>
+                <div>
+                    High score: {Math.round(state.highScore * 100)}
+                </div>
             </div>
             <div className="money">
                 {Math.round(state.money)} <img src={moneyImage} alt="Money" />

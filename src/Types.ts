@@ -7,7 +7,13 @@ export interface Action {
 
 export interface GameState {
     score: number,
+    highScore: number,
     lane: number,
     money: number,
     defeat: boolean,
+};
+
+export interface SavedState {
+    highScore: number,
+    money: number,
 };
