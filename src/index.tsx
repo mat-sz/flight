@@ -3,6 +3,7 @@ import { createStore } from 'redux';
 
 import './App.scss';
 import scanlines from './shaders/scanlines.frag';
+import vignette from './shaders/vignette.frag';
 
 import gameState from './reducers/gameState';
 import addOverlay from './functions/addOverlay';
@@ -27,7 +28,10 @@ const planeMesh = new Mesh(geometry, material);
 planeMesh.rotateX(Math.PI/2);
 scene.add(planeMesh);
 
-const scanlinesShader = createShader(renderer, scanlines);
+const shaders = [
+    createShader(renderer, scanlines),
+    createShader(renderer, vignette),
+];
 
 // ...and here we start rendering things.
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -44,7 +48,8 @@ function render(time: number) {
     renderer.setRenderTarget(outputBuffer);
     renderer.render(scene, camera);
 
-    scanlinesShader(outputBuffer, time, true);
+    shaders.reduce((buffer, current, i) => current(buffer, time, i === shaders.length - 1), outputBuffer);
+
     requestAnimationFrame(render);
 }
 

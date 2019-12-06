@@ -24,6 +24,7 @@ export default function createShader(renderer: WebGLRenderer, fragmentShader?: s
 
     const shaderMesh = new Mesh(new PlaneBufferGeometry(2, 2), shaderMaterial);
     shaderMesh.frustumCulled = false;
+    const outputBuffer: WebGLRenderTarget = new WebGLRenderTarget(1, 1);
 
     scene.add(shaderMesh);
 
@@ -33,11 +34,12 @@ export default function createShader(renderer: WebGLRenderer, fragmentShader?: s
         uniforms.iTexture.value = inputBuffer.texture;
         
         const size = renderer.getDrawingBufferSize(new Vector2());
-        const outputBuffer: WebGLRenderTarget = finalPass ? null : new WebGLRenderTarget(size.width, size.height);
+        outputBuffer.setSize(size.width, size.height);
+        const output = finalPass ? null : outputBuffer;
     
-        renderer.setRenderTarget(outputBuffer);
+        renderer.setRenderTarget(output);
         renderer.render(scene, camera);
     
-        return outputBuffer;
+        return output;
     };
 }
