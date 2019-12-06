@@ -24,9 +24,23 @@ body {
 
     .score {
         position: absolute;
-        left: 70%;
-        bottom: 22%;
+        left: 10%;
+        top: 10%;
         font-size: 20px;
+    }
+
+    .money {
+        position: absolute;
+        left: 70%;
+        top: 10%;
+        right: 10%;
+        text-align: right;
+        font-size: 20px;
+
+        img {
+            margin-bottom: -2px;
+            max-height: 20px;
+        }
     }
 
     .defeat.hidden {
@@ -34,20 +48,25 @@ body {
     }
 
     .defeat {
-        color: red;
+        color: white;
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
-        z-index: 9999;
+
         display: flex;
         justify-content: center;
         align-items: center;
-        font-weight: bold;
-        font-size: 90px;
-        background: rgba(255, 0, 0, 0.2);
+
+        background: rgba(255, 255, 255, 0.05);
         pointer-events: none;
         transition: 0.2s ease-in-out all;
+
+        .text {
+            mix-blend-mode: difference;
+            font-weight: bold;
+            font-size: 90px;
+        }
     }
 }

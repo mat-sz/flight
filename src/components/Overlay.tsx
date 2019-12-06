@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 
+import moneyImage from '../img/money.png';
+
 import { GameState } from '../Types';
 
 const mapStateToProps = (state: GameState) => state;
@@ -11,13 +13,19 @@ const Overlay = connect(
 )(({ score, money, defeat }: GameState) => {
     return (
         <div className="overlay">
-            <div className="score">
-                <div>Score: {Math.round(score * 100)}</div>
-                <div>Money: {Math.round(money)}</div>
-            </div>
             <div className={classNames('defeat', {
                 'hidden': !defeat,
-            })}>You've lost.</div>
+            })}>
+                <div className="text">
+                    Defeat
+                </div>
+            </div>
+            <div className="score">
+                Score: {Math.round(score * 100)}
+            </div>
+            <div className="money">
+                {Math.round(money)} <img src={moneyImage} alt="Money" />
+            </div>
         </div>
     )
 });
