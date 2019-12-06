@@ -29,6 +29,23 @@ button {
     }
 }
 
+.display {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    margin: 10px;
+    padding: 10px;
+    width: 150px;
+
+    &__title {
+        color: #999;
+        font-size: 12px;
+    }
+
+    &__value {
+        font-size: 24px;
+    }
+}
+
 .overlay {
     position: absolute;
     top: 0;
@@ -48,11 +65,13 @@ button {
         left: 70%;
         top: 10%;
         right: 10%;
-        text-align: right;
         font-size: 20px;
 
+        display: flex;
+        justify-content: flex-end;
+
         img {
-            margin-bottom: -2px;
+            margin-bottom: -1px;
             max-height: 20px;
         }
     }
