@@ -1,4 +1,4 @@
-import { PerspectiveCamera, Scene, WebGLRenderer, Mesh, ConeGeometry, IcosahedronGeometry, BoxGeometry, MeshNormalMaterial, Vector3, ShaderMaterial, PlaneGeometry } from 'three';
+import { PerspectiveCamera, Scene, Mesh, IcosahedronGeometry, BoxGeometry, MeshNormalMaterial, Vector3, Geometry } from 'three';
 import { Store, Action } from 'redux';
 
 import { laneWidth } from '../constants';
@@ -14,30 +14,26 @@ let speed = 0.02;
 let spawnCycle = 0;
 let spawnMode = 0;
 
+function spawnGeometry(geometry: Geometry, trackingArray: Mesh[], camera: PerspectiveCamera, scene: Scene, lane: number) {
+    const material = new MeshNormalMaterial();
+    let mesh = new Mesh(geometry, material);
+    mesh.position.x = lane * laneWidth;
+    mesh.position.y = 0;
+    mesh.position.z = camera.position.z + 4;
+
+    trackingArray.push(mesh);
+    
+    scene.add(mesh);
+}
+
 function spawnPickup(camera: PerspectiveCamera, scene: Scene, lane: number) {
     const geometry = new IcosahedronGeometry(0.1, 0);
-    const material = new MeshNormalMaterial();
-    let pickupMesh = new Mesh(geometry, material);
-    pickupMesh.position.x = lane * laneWidth;
-    pickupMesh.position.y = 0;
-    pickupMesh.position.z = camera.position.z + 4;
-
-    pickupMeshes.push(pickupMesh);
-    
-    scene.add(pickupMesh);
+    spawnGeometry(geometry, pickupMeshes, camera, scene, lane);
 }
 
 function spawnBox(camera: PerspectiveCamera, scene: Scene, lane: number) {
     const geometry = new BoxGeometry(0.2, 0.2, 0.2);
-    const material = new MeshNormalMaterial();
-    let boxMesh = new Mesh(geometry, material);
-    boxMesh.position.x = lane * laneWidth;
-    boxMesh.position.y = 0;
-    boxMesh.position.z = camera.position.z + 4;
-
-    boxMeshes.push(boxMesh);
-    
-    scene.add(boxMesh);
+    spawnGeometry(geometry, boxMeshes, camera, scene, lane);
 }
 
 function spawn(camera: PerspectiveCamera, scene: Scene) {

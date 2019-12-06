@@ -28,16 +28,16 @@ vec4 scanline(vec2 coord, vec4 screen)
 
 vec4 vignette(vec2 coord, vec4 screen)
 {
-    float dx = 1.3 * abs(coord.x - .5);
-    float dy = 1.3 * abs(coord.y - .5);
-    return screen * (1.0 - dx * dx - dy * dy);
+    float dx = 1.0 * abs(coord.x - .5);
+    float dy = 1.0 * abs(coord.y - .5);
+    return screen * (0.9 - dx * dx - dy * dy);
 }
 
 void main()
 {
     vec2 p = gl_FragCoord.xy / iResolution.xy;
+    p = fisheye(p, 0.25);
     gl_FragColor = texture2D(iTexture, p);
-    p = fisheye(p, 0.03);
     
     gl_FragColor = vignette(p, scanline(p, gl_FragColor));
     gl_FragColor.a = 0.5;

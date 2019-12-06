@@ -33,9 +33,9 @@ export default function createShader(renderer: WebGLRenderer, fragmentShader?: s
         uniforms.iTexture.value = inputBuffer.texture;
         
         const size = renderer.getDrawingBufferSize(new Vector2());
-        const outputBuffer: WebGLRenderTarget = new WebGLRenderTarget(size.width, size.height);
+        const outputBuffer: WebGLRenderTarget = finalPass ? null : new WebGLRenderTarget(size.width, size.height);
     
-        renderer.setRenderTarget(finalPass ? null : outputBuffer);
+        renderer.setRenderTarget(outputBuffer);
         renderer.render(scene, camera);
     
         return outputBuffer;
