@@ -123,6 +123,7 @@ export default function tick(camera: PerspectiveCamera, scene: Scene, planeMesh:
             spawn(camera, scene);
 
         lastZ = currentZ;
+        speed += 0.0001;
     }
 
     pickupMeshes = pickupMeshes.filter((mesh) => {
