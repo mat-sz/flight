@@ -8,7 +8,7 @@ import { GameState } from '../Types';
 let boxMeshes: Mesh[] = [];
 let pickupMeshes: Mesh[] = [];
 
-let counter = 0;
+let lastZ = 0;
 let speed = 0.02;
 
 let spawnCycle = 0;
@@ -19,7 +19,7 @@ function spawnGeometry(geometry: Geometry, trackingArray: Mesh[], camera: Perspe
     let mesh = new Mesh(geometry, material);
     mesh.position.x = lane * laneWidth;
     mesh.position.y = 0;
-    mesh.position.z = camera.position.z + 7;
+    mesh.position.z = camera.position.z + 6;
 
     trackingArray.push(mesh);
     
@@ -117,11 +117,12 @@ export default function tick(camera: PerspectiveCamera, scene: Scene, planeMesh:
         pickupMesh.rotation.z -= 0.02;
     }
 
-    counter++;
+    const currentZ = Math.floor(camera.position.z / 0.3);
+    if (currentZ > lastZ) {
+        if (lastZ !== 0)
+            spawn(camera, scene);
 
-    if (counter > 15) {
-        counter = 0;
-        spawn(camera, scene);
+        lastZ = currentZ;
     }
 
     pickupMeshes = pickupMeshes.filter((mesh) => {
