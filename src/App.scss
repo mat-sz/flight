@@ -56,16 +56,15 @@ button {
 
     .score {
         position: absolute;
-        left: 10%;
-        top: 10%;
+        left: 5%;
+        top: 5%;
         font-size: 20px;
     }
 
     .money {
         position: absolute;
-        left: 70%;
-        top: 10%;
-        right: 10%;
+        top: 5%;
+        right: 5%;
         font-size: 20px;
 
         display: flex;
@@ -102,6 +101,20 @@ button {
             mix-blend-mode: difference;
             font-weight: bold;
             font-size: 90px;
+        }
+    }
+}
+
+@media screen and (min-width: 1000px) {
+    .overlay {
+        .score {
+            left: 10%;
+            top: 10%;
+        }
+    
+        .money {
+            top: 10%;
+            right: 10%;
         }
     }
 }
