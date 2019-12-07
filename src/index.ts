@@ -6,7 +6,7 @@ import './App.scss';
 import gameState from './reducers/gameState';
 import addOverlay from './functions/addOverlay';
 import addWindowEvents from './functions/addWindowEvents';
-import tick, { reset } from './functions/tick';
+import tick, { reset, spawnTick } from './functions/tick';
 import createShaders from './shaders';
 import ActionType from './constants/ActionType';
 
@@ -38,6 +38,8 @@ outputBuffer.texture.generateMipmaps = false;
 render(0);
  
 function render(time: number) {
+    tick(camera, scene, planeMesh, gameStateStore);
+
     const size = renderer.getDrawingBufferSize(new Vector2());
     outputBuffer.setSize(size.width, size.height);
     
@@ -51,9 +53,11 @@ function render(time: number) {
 
 setInterval(() => {
     gameStateStore.dispatch({ type: ActionType.SET_SCORE, value: camera.position.z });
-}, 50);
+}, 75);
 
-setInterval(() => tick(camera, scene, planeMesh, gameStateStore), 16.667);
+setInterval(() => {
+    spawnTick(camera, scene);
+}, 100);
 
 addWindowEvents(camera, renderer, gameStateStore);
 addOverlay(gameStateStore, () => {

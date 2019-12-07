@@ -19,7 +19,7 @@ function spawnGeometry(geometry: Geometry, trackingArray: Mesh[], camera: Perspe
     let mesh = new Mesh(geometry, material);
     mesh.position.x = lane * laneWidth;
     mesh.position.y = 0;
-    mesh.position.z = camera.position.z + 6;
+    mesh.position.z = Math.floor(camera.position.z / 0.3) * 0.3 + 6;
 
     trackingArray.push(mesh);
     
@@ -113,6 +113,17 @@ export function reset(camera: PerspectiveCamera, scene: Scene, planeMesh: Mesh, 
     gameStateStore.dispatch({ type: ActionType.SET_DEFEAT, value: false });
 }
 
+export function spawnTick(camera: PerspectiveCamera, scene: Scene) {
+    const currentZ = Math.floor(camera.position.z / 0.3);
+    if (currentZ > lastZ) {
+        if (lastZ !== 0)
+            spawn(camera, scene);
+
+        lastZ = currentZ;
+        speed += 0.0001;
+    }
+}
+
 export default function tick(camera: PerspectiveCamera, scene: Scene, planeMesh: Mesh, gameStateStore: Store<GameState, Action>) {
     const state = gameStateStore.getState();
     if (state.defeat) return;
@@ -138,15 +149,6 @@ export default function tick(camera: PerspectiveCamera, scene: Scene, planeMesh:
     for (let pickupMesh of pickupMeshes) {
         pickupMesh.rotation.x += 0.01;
         pickupMesh.rotation.z -= 0.02;
-    }
-
-    const currentZ = Math.floor(camera.position.z / 0.3);
-    if (currentZ > lastZ) {
-        if (lastZ !== 0)
-            spawn(camera, scene);
-
-        lastZ = currentZ;
-        speed += 0.0001;
     }
 
     pickupMeshes = pickupMeshes.filter((mesh) => {
