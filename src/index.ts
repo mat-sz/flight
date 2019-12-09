@@ -13,8 +13,8 @@ import ActionType from './constants/ActionType';
 const gameStateStore = createStore(gameState);
 
 const camera: PerspectiveCamera = new PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 10);
-camera.position.x = 0;
-camera.position.z = 1;
+camera.position.x = 1;
+camera.position.z = 0;
 camera.position.y = 2;
 
 const scene: Scene = new Scene();
@@ -24,7 +24,7 @@ const renderer: WebGLRenderer = new WebGLRenderer({ antialias: true });
 const material = new MeshNormalMaterial();
 const geometry = new ConeGeometry(0.15, 0.3, 8);
 const planeMesh = new Mesh(geometry, material);
-planeMesh.rotateX(Math.PI/2);
+planeMesh.rotateZ(-Math.PI/2);
 scene.add(planeMesh);
 
 const shaders = createShaders(renderer);
@@ -52,7 +52,7 @@ function render(time: number) {
 }
 
 setInterval(() => {
-    gameStateStore.dispatch({ type: ActionType.SET_SCORE, value: camera.position.z });
+    gameStateStore.dispatch({ type: ActionType.SET_SCORE, value: camera.position.x });
 }, 75);
 
 setInterval(() => {

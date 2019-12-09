@@ -8,7 +8,7 @@ import { GameState } from '../Types';
 let boxMeshes: Mesh[] = [];
 let pickupMeshes: Mesh[] = [];
 
-let lastZ = 0;
+let lastX = 0;
 let speed = 0.02;
 
 let spawnCycle = 0;
@@ -17,9 +17,9 @@ let spawnMode = 0;
 function spawnGeometry(geometry: Geometry, trackingArray: Mesh[], camera: PerspectiveCamera, scene: Scene, lane: number) {
     const material = new MeshNormalMaterial();
     let mesh = new Mesh(geometry, material);
-    mesh.position.x = lane * laneWidth;
+    mesh.position.x = Math.floor(camera.position.x / 0.3) * 0.3 + 6;
     mesh.position.y = 0;
-    mesh.position.z = Math.floor(camera.position.z / 0.3) * 0.3 + 6;
+    mesh.position.z = lane * laneWidth;
 
     trackingArray.push(mesh);
     
@@ -66,7 +66,7 @@ function spawn(camera: PerspectiveCamera, scene: Scene) {
 
     // Get rid of the ones we don't see anyway.
     boxMeshes = boxMeshes.filter((mesh) => {
-        if (mesh.position.z < camera.position.z) {
+        if (mesh.position.x < camera.position.x) {
             scene.remove(mesh);
             return false;
         }
@@ -75,7 +75,7 @@ function spawn(camera: PerspectiveCamera, scene: Scene) {
     });
 
     pickupMeshes = pickupMeshes.filter((mesh) => {
-        if (mesh.position.z < camera.position.z) {
+        if (mesh.position.x < camera.position.x) {
             scene.remove(mesh);
             return false;
         }
@@ -91,11 +91,11 @@ function spawn(camera: PerspectiveCamera, scene: Scene) {
 
 export function reset(camera: PerspectiveCamera, scene: Scene, planeMesh: Mesh, gameStateStore: Store<GameState, Action>) {
     gameStateStore.dispatch({ type: ActionType.SET_SCORE, value: 0 });
-    camera.position.z = 0;
-    planeMesh.position.z = 1;
-    camera.lookAt(new Vector3(0, 1, camera.position.z + 1));
+    camera.position.x = 0;
+    planeMesh.position.x = 1;
+    camera.lookAt(new Vector3(camera.position.x + 1, 1, 0));
 
-    lastZ = 0;
+    lastX = 0;
     speed = 0.02;
     spawnCycle = 0;
     spawnMode = 0;
@@ -114,12 +114,12 @@ export function reset(camera: PerspectiveCamera, scene: Scene, planeMesh: Mesh, 
 }
 
 export function spawnTick(camera: PerspectiveCamera, scene: Scene) {
-    const currentZ = Math.floor(camera.position.z / 0.3);
-    if (currentZ > lastZ) {
-        if (lastZ !== 0)
+    const currentX = Math.floor(camera.position.x / 0.3);
+    if (currentX > lastX) {
+        if (lastX !== 0)
             spawn(camera, scene);
 
-        lastZ = currentZ;
+        lastX = currentX;
         speed += 0.0001;
     }
 }
@@ -128,21 +128,21 @@ export default function tick(camera: PerspectiveCamera, scene: Scene, planeMesh:
     const state = gameStateStore.getState();
     if (state.defeat) return;
 
-    camera.position.z += speed;
-    camera.lookAt(new Vector3(0, 1, camera.position.z + 1));
+    camera.position.x += speed;
+    camera.lookAt(new Vector3(camera.position.x + 1, 1, 0));
     
-    const targetX = state.lane * -(laneWidth);
-    planeMesh.position.z = camera.position.z + 1;
+    const targetZ = state.lane * laneWidth;
+    planeMesh.position.x = camera.position.x + 1;
     
-    if (planeMesh.position.x != targetX) {
-        if (targetX > planeMesh.position.x) {
-            planeMesh.position.x += 0.04;
+    if (planeMesh.position.z != targetZ) {
+        if (targetZ > planeMesh.position.z) {
+            planeMesh.position.z += 0.04;
         } else {
-            planeMesh.position.x -= 0.04;
+            planeMesh.position.z -= 0.04;
         }
 
-        if (Math.abs(planeMesh.position.x - targetX) < 0.04) {
-            planeMesh.position.x = targetX;
+        if (Math.abs(planeMesh.position.z - targetZ) < 0.04) {
+            planeMesh.position.z = targetZ;
         }
     }
 
@@ -152,8 +152,8 @@ export default function tick(camera: PerspectiveCamera, scene: Scene, planeMesh:
     }
 
     pickupMeshes = pickupMeshes.filter((mesh) => {
-        if (Math.abs(planeMesh.position.x - mesh.position.x) < 0.2
-            && Math.abs(planeMesh.position.z - mesh.position.z) < 0.15) {
+        if (Math.abs(planeMesh.position.x - mesh.position.x) < 0.15
+            && Math.abs(planeMesh.position.z - mesh.position.z) < 0.2) {
             // Dumb collision detection.
             gameStateStore.dispatch({ type: ActionType.ADD_MONEY, value: 1 });
             scene.remove(mesh);
@@ -164,8 +164,8 @@ export default function tick(camera: PerspectiveCamera, scene: Scene, planeMesh:
     });
 
     for (let mesh of boxMeshes) {
-        if (Math.abs(planeMesh.position.x - mesh.position.x) < 0.2
-            && Math.abs(planeMesh.position.z - mesh.position.z) < 0.15) {
+        if (Math.abs(planeMesh.position.x - mesh.position.x) < 0.15
+            && Math.abs(planeMesh.position.z - mesh.position.z) < 0.2) {
             gameStateStore.dispatch({ type: ActionType.SET_DEFEAT, value: true });
         }
     }
