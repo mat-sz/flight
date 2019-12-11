@@ -12,12 +12,12 @@ export default function addWindowEvents(camera: PerspectiveCamera, renderer: Web
 
     window.addEventListener('keydown', (event) => {
         const planeLane = store.getState().lane;
-        switch (event.keyCode) {
-            case 37: // Left
+        switch (event.key) {
+            case 'ArrowLeft':
                 if (planeLane > -1)
                     store.dispatch({ type: ActionType.SET_LANE, value: planeLane - 1 });
                 break;
-            case 39: // Right
+            case 'ArrowRight':
                 if (planeLane < 1)
                     store.dispatch({ type: ActionType.SET_LANE, value: planeLane + 1 });
                 break;
