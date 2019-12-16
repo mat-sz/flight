@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import moneyImage from '../img/money.png';
 
@@ -7,24 +7,22 @@ import { GameState } from '../Types';
 import Defeat from './Defeat';
 import Display from './Display';
 
-const mapStateToProps = (state: GameState, { onReset }: { onReset: () => void }) => {
-    return { state, onReset };
-};
+const Overlay = ({ onReset }: { onReset: () => void }) => {
+    const score = useSelector((state: GameState) => state.score);
+    const highScore = useSelector((state: GameState) => state.highScore);
+    const money = useSelector((state: GameState) => state.money);
 
-const Overlay = connect(
-    mapStateToProps
-)(({ onReset, state }: { onReset: () => void, state: GameState }) => {
     return (
         <div className="overlay">
-            <Defeat hidden={!state.defeat} onReset={onReset} />
+            <Defeat onReset={onReset} />
             <div className="score">
                 <Display
                     title="Score"
-                    value={Math.round(state.score * 100)}
+                    value={Math.round(score * 100)}
                 />
                 <Display
                     title="High score"
-                    value={Math.round(state.highScore * 100)}
+                    value={Math.round(highScore * 100)}
                 />
             </div>
             <div className="money">
@@ -32,13 +30,13 @@ const Overlay = connect(
                     title="Money"
                     value={(
                         <>
-                        {Math.round(state.money)} <img src={moneyImage} alt="Money" />
+                        {Math.round(money)} <img src={moneyImage} alt="Money" />
                         </>
                     )}
                 />
             </div>
         </div>
     )
-});
+};
 
 export default Overlay;

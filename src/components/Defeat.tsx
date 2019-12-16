@@ -1,10 +1,15 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 
-const Defeat = ({ hidden, onReset }: { hidden: boolean, onReset: () => void }) => {
+import { GameState } from '../Types';
+
+const Defeat = ({ onReset }: { onReset: () => void }) => {
+    const defeat = useSelector((state: GameState) => state.defeat);
+
     return (
         <div className={classNames('defeat', {
-            'hidden': hidden,
+            'hidden': !defeat,
         })}>
             <div className="text">
                 Defeat
