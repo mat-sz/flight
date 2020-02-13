@@ -35,10 +35,15 @@ document.body.appendChild(renderer.domElement);
 
 const outputBuffer: WebGLRenderTarget = new WebGLRenderTarget(1, 1);
 outputBuffer.texture.generateMipmaps = false;
+
+let timeLast = 0;
 render(0);
- 
+
 function render(time: number) {
-    tick(camera, scene, planeMesh, gameStateStore);
+    const timeDifference = time - timeLast;
+    timeLast = time;
+
+    tick(camera, scene, planeMesh, gameStateStore, timeDifference);
 
     const size = renderer.getDrawingBufferSize(new Vector2());
     outputBuffer.setSize(size.width, size.height);
@@ -53,7 +58,7 @@ function render(time: number) {
 
 setInterval(() => {
     gameStateStore.dispatch({ type: ActionType.SET_SCORE, value: camera.position.x });
-}, 75);
+}, 250);
 
 setInterval(() => {
     spawnTick(camera, scene);

@@ -124,11 +124,12 @@ export function spawnTick(camera: PerspectiveCamera, scene: Scene) {
     }
 }
 
-export default function tick(camera: PerspectiveCamera, scene: Scene, planeMesh: Mesh, gameStateStore: Store<GameState, Action>) {
+export default function tick(camera: PerspectiveCamera, scene: Scene, planeMesh: Mesh, gameStateStore: Store<GameState, Action>, timeDifference: number) {
     const state = gameStateStore.getState();
     if (state.defeat) return;
 
-    camera.position.x += speed;
+    // 16.667 = 60 FPS tick target
+    camera.position.x += speed * (timeDifference / 16.667);
     camera.lookAt(new Vector3(camera.position.x + 1, 1, 0));
     
     const targetZ = state.lane * laneWidth;
