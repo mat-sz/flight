@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { MobileView, BrowserView } from 'react-device-detect';
 
 import moneyImage from '../img/money.png';
 
@@ -34,6 +35,14 @@ const Overlay = ({ onReset }: { onReset: () => void }) => {
                         </>
                     )}
                 />
+            </div>
+            <div className="help">
+                <MobileView>
+                    Tap on left and right sides of the screen to move.
+                </MobileView>
+                <BrowserView>
+                    Use left and right arrow keys to move.
+                </BrowserView>
             </div>
         </div>
     )

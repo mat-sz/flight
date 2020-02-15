@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.ts",
   "scripts": {
-    "start": "NODE_ENV=development webpack-dev-server --mode development --open --hot",
+    "start": "NODE_ENV=development webpack-dev-server --mode development --open --hot --host 0.0.0.0",
     "build": "NODE_ENV=production webpack --mode production"
   },
   "devDependencies": {
@@ -34,6 +34,7 @@
     "@types/redux": "^3.6.0",
     "classnames": "^2.2.6",
     "react": "^16.12.0",
+    "react-device-detect": "^1.11.14",
     "react-dom": "^16.12.0",
     "react-redux": "^7.1.3",
     "redux": "^4.0.4",
