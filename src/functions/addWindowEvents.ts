@@ -3,7 +3,7 @@ import { GameState } from '../Types';
 import { Store, Action } from 'redux';
 import ActionType from '../constants/ActionType';
 
-export default function addWindowEvents(camera: PerspectiveCamera, renderer: WebGLRenderer, store: Store<GameState, Action>) {
+export default function addWindowEvents(camera: PerspectiveCamera, renderer: WebGLRenderer, store: Store<GameState, Action>, onReset: () => void) {
     window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
@@ -11,15 +11,22 @@ export default function addWindowEvents(camera: PerspectiveCamera, renderer: Web
     });
 
     window.addEventListener('keydown', (event) => {
-        const planeLane = store.getState().lane;
+        const state = store.getState();
         switch (event.key) {
             case 'ArrowLeft':
-                if (planeLane > -1)
-                    store.dispatch({ type: ActionType.SET_LANE, value: planeLane - 1 });
+                if (state.lane > -1) {
+                    store.dispatch({ type: ActionType.SET_LANE, value: state.lane - 1 });
+                }
                 break;
             case 'ArrowRight':
-                if (planeLane < 1)
-                    store.dispatch({ type: ActionType.SET_LANE, value: planeLane + 1 });
+                if (state.lane < 1) {
+                    store.dispatch({ type: ActionType.SET_LANE, value: state.lane + 1 });
+                }
+                break;
+            case ' ':
+                if (state.defeat) {
+                    onReset();
+                }
                 break;
         }
     });

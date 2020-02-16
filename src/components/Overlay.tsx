@@ -12,6 +12,7 @@ const Overlay = ({ onReset }: { onReset: () => void }) => {
     const score = useSelector((state: GameState) => state.score);
     const highScore = useSelector((state: GameState) => state.highScore);
     const money = useSelector((state: GameState) => state.money);
+    const defeat = useSelector((state: GameState) => state.defeat);
 
     return (
         <div className="overlay">
@@ -41,7 +42,11 @@ const Overlay = ({ onReset }: { onReset: () => void }) => {
                     Tap on left and right sides of the screen to move.
                 </MobileView>
                 <BrowserView>
-                    Use left and right arrow keys to move.
+                    { defeat ?
+                        'Press Space to restart.'
+                    :
+                        'Use left and right arrow keys to move.'
+                    }
                 </BrowserView>
             </div>
         </div>

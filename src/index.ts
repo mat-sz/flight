@@ -64,7 +64,9 @@ setInterval(() => {
     spawnTick(camera, scene);
 }, 100);
 
-addWindowEvents(camera, renderer, gameStateStore);
-addOverlay(gameStateStore, () => {
+const onReset = () => {
     reset(camera, scene, planeMesh, gameStateStore);
-});
+};
+
+addWindowEvents(camera, renderer, gameStateStore, onReset);
+addOverlay(gameStateStore, onReset);
