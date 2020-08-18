@@ -5,8 +5,10 @@ import { Provider } from 'react-redux';
 import Overlay from '../components/Overlay';
 
 export default function addOverlay(store: any, onReset: () => void) {
-    ReactDOM.render(
+  ReactDOM.render(
     <Provider store={store}>
-        <Overlay onReset={onReset} />
-    </Provider>, document.getElementById('overlay'));
-};
+      <Overlay onReset={onReset} />
+    </Provider>,
+    document.getElementById('overlay')
+  );
+}

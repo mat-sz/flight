@@ -7,9 +7,9 @@ import fog from './fog.frag';
 import createShader from '../functions/createShader';
 
 export const createShaders = (renderer: WebGLRenderer) => [
-    createShader(renderer, fog),
-    createShader(renderer, scanlines),
-    createShader(renderer, vignette),
+  createShader(renderer, fog),
+  createShader(renderer, scanlines),
+  createShader(renderer, vignette),
 ];
 
 export default createShaders;

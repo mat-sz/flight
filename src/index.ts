@@ -1,4 +1,13 @@
-import { PerspectiveCamera, Scene, WebGLRenderer, Mesh, ConeGeometry, MeshNormalMaterial, Vector2, WebGLRenderTarget } from 'three';
+import {
+  PerspectiveCamera,
+  Scene,
+  WebGLRenderer,
+  Mesh,
+  ConeGeometry,
+  MeshNormalMaterial,
+  Vector2,
+  WebGLRenderTarget,
+} from 'three';
 import { createStore } from 'redux';
 
 import './App.scss';
@@ -12,7 +21,12 @@ import ActionType from './constants/ActionType';
 
 const gameStateStore = createStore(gameState);
 
-const camera: PerspectiveCamera = new PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 10);
+const camera: PerspectiveCamera = new PerspectiveCamera(
+  70,
+  window.innerWidth / window.innerHeight,
+  0.01,
+  10
+);
 camera.position.x = 1;
 camera.position.z = 0;
 camera.position.y = 2;
@@ -24,7 +38,7 @@ const renderer: WebGLRenderer = new WebGLRenderer({ antialias: true });
 const material = new MeshNormalMaterial();
 const geometry = new ConeGeometry(0.15, 0.3, 8);
 const planeMesh = new Mesh(geometry, material);
-planeMesh.rotateZ(-Math.PI/2);
+planeMesh.rotateZ(-Math.PI / 2);
 scene.add(planeMesh);
 
 const shaders = createShaders(renderer);
@@ -40,32 +54,38 @@ let timeLast = 0;
 render(0);
 
 function render(time: number) {
-    const timeDifference = time - timeLast;
-    timeLast = time;
+  const timeDifference = time - timeLast;
+  timeLast = time;
 
-    tick(camera, scene, planeMesh, gameStateStore, timeDifference);
+  tick(camera, scene, planeMesh, gameStateStore, timeDifference);
 
-    const size = renderer.getDrawingBufferSize(new Vector2());
-    outputBuffer.setSize(size.width, size.height);
-    
-    renderer.setRenderTarget(outputBuffer);
-    renderer.render(scene, camera);
+  const size = renderer.getDrawingBufferSize(new Vector2());
+  outputBuffer.setSize(size.width, size.height);
 
-    shaders.reduce((buffer, current, i) => current(buffer, time, i === shaders.length - 1), outputBuffer);
+  renderer.setRenderTarget(outputBuffer);
+  renderer.render(scene, camera);
 
-    requestAnimationFrame(render);
+  shaders.reduce(
+    (buffer, current, i) => current(buffer, time, i === shaders.length - 1),
+    outputBuffer
+  );
+
+  requestAnimationFrame(render);
 }
 
 setInterval(() => {
-    gameStateStore.dispatch({ type: ActionType.SET_SCORE, value: camera.position.x });
+  gameStateStore.dispatch({
+    type: ActionType.SET_SCORE,
+    value: camera.position.x,
+  });
 }, 250);
 
 setInterval(() => {
-    spawnTick(camera, scene);
+  spawnTick(camera, scene);
 }, 100);
 
 const onReset = () => {
-    reset(camera, scene, planeMesh, gameStateStore);
+  reset(camera, scene, planeMesh, gameStateStore);
 };
 
 addWindowEvents(camera, renderer, gameStateStore, onReset);

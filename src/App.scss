@@ -1,151 +1,155 @@
-html, body {
-    overflow: hidden;
+html,
+body {
+  overflow: hidden;
 }
 
 body {
-    position: fixed;
-    color: white;
-    font-family: monospace;
+  position: fixed;
+  color: white;
+  font-family: monospace;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    width: 100%;
-    margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  margin: 0;
 }
 
 button {
-    background: rgba(255, 255, 255, 0.75);
-    border: none;
-    color: black;
-    font-size: 20px;
-    padding: 10px 15px;
-    cursor: pointer;
-    transition: 0.2s ease-in-out all;
+  background: rgba(255, 255, 255, 0.75);
+  border: none;
+  color: black;
+  font-size: 20px;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: 0.2s ease-in-out all;
 
-    &:hover {
-        background: rgba(255, 255, 255, 1);
-    }
+  &:hover {
+    background: rgba(255, 255, 255, 1);
+  }
 }
 
 .github-corner {
-    z-index: 500;
+  z-index: 500;
 
-    &:hover .octo-arm {
-        animation:octocat-wave 560ms ease-in-out
-    }
+  &:hover .octo-arm {
+    animation: octocat-wave 560ms ease-in-out;
+  }
 }
 
 @keyframes octocat-wave {
-    0%,100% {
-        transform:rotate(0)
-    }
-    
-    20%,60% {
-        transform:rotate(-25deg)
-    }
-    
-    40%,80% {
-        transform:rotate(10deg)
-    }
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+
+  20%,
+  60% {
+    transform: rotate(-25deg);
+  }
+
+  40%,
+  80% {
+    transform: rotate(10deg);
+  }
 }
 
 .display {
-    background: rgba(255, 255, 255, 0.05);
-    color: white;
-    margin: 10px;
-    padding: 10px;
-    width: 150px;
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+  margin: 10px;
+  padding: 10px;
+  width: 150px;
 
-    &__title {
-        color: #999;
-        font-size: 12px;
-    }
+  &__title {
+    color: #999;
+    font-size: 12px;
+  }
 
-    &__value {
-        font-size: 24px;
-        will-change: contents;
-    }
+  &__value {
+    font-size: 24px;
+    will-change: contents;
+  }
 }
 
 .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  .score {
+    position: absolute;
+    left: 5%;
+    top: 5%;
+    font-size: 20px;
+  }
+
+  .money {
+    position: absolute;
+    top: 5%;
+    right: 5%;
+    font-size: 20px;
+
+    display: flex;
+    justify-content: flex-end;
+
+    img {
+      margin-bottom: -1px;
+      max-height: 20px;
+    }
+  }
+
+  .help {
+    position: absolute;
+    bottom: 5%;
+    font-size: 16px;
+    left: 5%;
+    right: 5%;
+    text-align: center;
+  }
+
+  .defeat.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .defeat {
+    color: white;
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
 
-    .score {
-        position: absolute;
-        left: 5%;
-        top: 5%;
-        font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    background: rgba(255, 255, 255, 0.05);
+    transition: 0.2s ease-in-out all;
+
+    .text {
+      mix-blend-mode: difference;
+      font-weight: bold;
+      font-size: 90px;
     }
-
-    .money {
-        position: absolute;
-        top: 5%;
-        right: 5%;
-        font-size: 20px;
-
-        display: flex;
-        justify-content: flex-end;
-
-        img {
-            margin-bottom: -1px;
-            max-height: 20px;
-        }
-    }
-
-    .help {
-        position: absolute;
-        bottom: 5%;
-        font-size: 16px;
-        left: 5%;
-        right: 5%;
-        text-align: center;
-    }
-
-    .defeat.hidden {
-        opacity: 0;
-        pointer-events: none;
-    }
-
-    .defeat {
-        color: white;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-
-        background: rgba(255, 255, 255, 0.05);
-        transition: 0.2s ease-in-out all;
-
-        .text {
-            mix-blend-mode: difference;
-            font-weight: bold;
-            font-size: 90px;
-        }
-    }
+  }
 }
 
 @media screen and (min-width: 1000px) {
-    .overlay {
-        .score {
-            left: 10%;
-            top: 10%;
-        }
-    
-        .money {
-            top: 10%;
-            right: 10%;
-        }
+  .overlay {
+    .score {
+      left: 10%;
+      top: 10%;
     }
+
+    .money {
+      top: 10%;
+      right: 10%;
+    }
+  }
 }

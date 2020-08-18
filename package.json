@@ -6,6 +6,19 @@
     "start": "NODE_ENV=development webpack-dev-server --mode development --open --hot --host 0.0.0.0",
     "build": "NODE_ENV=production webpack --mode production"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write"
+    ],
+    "__tests__/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write"
+    ]
+  },
   "devDependencies": {
     "@babel/core": "^7.6.4",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
@@ -15,8 +28,11 @@
     "css-loader": "^3.2.0",
     "file-loader": "^5.0.2",
     "html-webpack-plugin": "^3.2.0",
+    "husky": "^4.2.5",
     "image-webpack-loader": "^6.0.0",
+    "lint-staged": "^10.2.11",
     "node-sass": "^4.13.0",
+    "prettier": "^2.0.5",
     "raw-loader": "^4.0.0",
     "sass-loader": "^8.0.0",
     "style-loader": "^1.0.0",
